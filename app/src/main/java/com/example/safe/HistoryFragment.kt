@@ -1,5 +1,5 @@
 package com.example.safe
-import ViewPagerAdapter
+import com.example.safe.adapters.ViewPagerAdapter
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment

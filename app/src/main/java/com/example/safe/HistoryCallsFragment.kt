@@ -1,47 +1,74 @@
 package com.example.safe
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.CallLog
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.recyclerview.widget.RecyclerView
-import com.example.safe.model.HistoryDataItem
+import com.example.safe.model.Call
 
 class HistoryCallsFragment : Fragment() {
 
-    private lateinit var rvToday : RecyclerView
-    private lateinit var rvYesterday : RecyclerView
+    private var PERMISSION_REQUEST_CODE = 1001
 
+    private lateinit var rvCalls : RecyclerView
+    var listOfCalls = mutableListOf<Call>()
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_history_calls, container, false)
 
-        var todayList = arrayListOf<HistoryDataItem>(
-            HistoryDataItem(R.drawable.veronica,"Veronica",false,"0","Sat, 10:00AM","+8938479838"),
-            HistoryDataItem(R.drawable.airtel,"Airtel",true,"80","Sat, 12:00PM","+5938569838"),
-            HistoryDataItem(R.drawable.maria,"Maria",true,"64","Sat, 5:00PM","+6575745480")
-        )
 
-        var yesterdayList = arrayListOf<HistoryDataItem>(
-            HistoryDataItem(R.drawable.samuel,"Samuel",true,"90",",Fri 10:00AM","+8364527837"),
-            HistoryDataItem(R.drawable.john,"John",false,"0","Fri, 12:00PM","+5938569838"),
-            HistoryDataItem(R.drawable.lottery,"Lottery",true,"99","Fri, 2:00PM","+5888569838"),
-            HistoryDataItem(R.drawable.charles,"Charles",false,"0","Fri, 5:00PM","+6575745480")
-        )
 
-        rvToday = view.findViewById(R.id.rvToday)
-        rvYesterday = view.findViewById(R.id.rvYesterday)
+        if (checkSelfPermission(requireContext(),Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(arrayOf(Manifest.permission.READ_CALL_LOG),PERMISSION_REQUEST_CODE)
+        }
 
-        rvToday.layoutManager = LinearLayoutManager(requireContext())
-        rvToday.adapter = HistoryRecyclerViewAdapter(requireContext(),todayList)
+        readCalls()
 
-        rvYesterday.layoutManager = LinearLayoutManager(requireContext())
-        rvYesterday.adapter = HistoryRecyclerViewAdapter(requireContext(),yesterdayList)
+        rvCalls = view.findViewById(R.id.rvCalls)
+
+        rvCalls.layoutManager = LinearLayoutManager(requireContext())
+        rvCalls.adapter = HistoryCallRecyclerViewAdapter(requireContext(),listOfCalls)
 
         return view
+
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            readCalls()
+    }
+
+    private fun readCalls() {
+
+        var cursor = requireContext().contentResolver.query(CallLog.Calls.CONTENT_URI,null,null,null,CallLog.Calls.DATE + " DESC")
+        if (cursor!= null && cursor.moveToFirst()) {
+            var numberIndex = cursor.getColumnIndex(CallLog.Calls.NUMBER)
+            var dateIndex = cursor.getColumnIndex(CallLog.Calls.DATE)
+            CallLog.Calls.NUMBER_PRESENTATION
+            do {
+                var number = cursor.getString(numberIndex)
+                var date = cursor.getString(dateIndex)
+                listOfCalls.add(Call(number, date, true))
+            } while (cursor.moveToNext())
+            cursor.close()
+        } else {
+            TODO()
+        }
+
 
     }
 }

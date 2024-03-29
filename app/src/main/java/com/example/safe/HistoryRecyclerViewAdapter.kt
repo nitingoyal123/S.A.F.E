@@ -7,19 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safe.databinding.HistoryContactItemLayoutBinding
+import com.example.safe.model.Call
 import com.example.safe.model.HistoryDataItem
 
-class HistoryRecyclerViewAdapter(var context : Context, var list : ArrayList<HistoryDataItem>) : RecyclerView.Adapter<HistoryRecyclerViewAdapter.MyViewHolder>() {
+class HistoryRecyclerViewAdapter(var context: Context, var list: MutableList<HistoryDataItem>) : RecyclerView.Adapter<HistoryRecyclerViewAdapter.MyViewHolder>() {
 
     class MyViewHolder(var binding : HistoryContactItemLayoutBinding) : RecyclerView.ViewHolder(binding.root){
-        var card = binding.cardView
         var image = binding.imgContactImage
         var name = binding.txtContactName
         var phone = binding.txtPhoneNumber
+        var card = binding.cardView
         var spam = binding.txtSpam
         var percentage = binding.txtSpamPercentage
         var dayTime = binding.txtDayTime
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

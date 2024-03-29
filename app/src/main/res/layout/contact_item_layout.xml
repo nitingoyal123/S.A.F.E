@@ -2,6 +2,14 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+
+        <variable
+            name="contact"
+            type="com.example.safe.model.Contact" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,7 +20,7 @@
             android:id="@+id/imgContactImage"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
-            android:src="@drawable/david"
+            android:src="@{contact.image}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +38,7 @@
                 android:id="@+id/txtContactName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="David Sarpong"
+                android:text="@{contact.name}"
                 android:textSize="@dimen/_16ssp"
                 android:textStyle="bold" />
 
@@ -38,7 +46,7 @@
                 android:id="@+id/txtContactNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+894729417407"
+                android:text="@{contact.phoneNumber}"
                 android:textSize="@dimen/_14ssp" />
 
         </LinearLayout>
