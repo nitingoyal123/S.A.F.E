@@ -79,7 +79,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintEnd_toEndOf="@id/gd3"
             app:layout_constraintStart_toStartOf="@+id/gd1"
-            app:layout_constraintTop_toBottomOf="@id/gd2" />
+            app:layout_constraintTop_toBottomOf="@id/constraintLayout2" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"

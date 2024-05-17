@@ -5,13 +5,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import com.example.safe.Main2Activity
 import com.example.safe.R
@@ -19,6 +16,7 @@ import com.example.safe.databinding.ActivitySplashScreenBinding
 
 class SplashScreenActivity : AppCompatActivity() {
     var PERMISSION_CODE_1 = 1001
+    var PERMISSION_CODE_MULTIPLE = 1002
 
     private lateinit var binding : ActivitySplashScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,68 +30,67 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun checkPermissions() {
-        Toast.makeText(this, "Permissions", Toast.LENGTH_SHORT).show()
-        // Check if permissions are not granted
+        val permissionsToRequest = mutableListOf<String>()
+
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.READ_CALL_LOG
-            ) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.READ_CALL_LOG)
+        }
+
+        if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.READ_SMS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            permissionsToRequest.add(Manifest.permission.READ_SMS)
+        }
 
-            // Request permissions
-            Log.d("TAGY","Requested Permission")
-            ActivityCompat.requestPermissions(
-
+        if (ContextCompat.checkSelfPermission(
                 this,
-                arrayOf(
-                    Manifest.permission.READ_CALL_LOG,
-                    Manifest.permission.READ_SMS,
-                    Manifest.permission.READ_CONTACTS
-                ),
-                PERMISSION_CODE_1
-            ) // Can use any of the permission codes
+                Manifest.permission.READ_CONTACTS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.READ_CONTACTS)
+        }
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.RECORD_AUDIO)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsToRequest.toTypedArray(),
+                PERMISSION_CODE_MULTIPLE
+            )
         } else {
-            Log.d("TAGY","All Permissions granted")
-            // All permissions are already granted, proceed with app functionality
-            // Implement your app logic here
-            startActivity(Intent(this@SplashScreenActivity,Main2Activity::class.java))
+            // ALL PERMISSIONS GRANTED
+            startActivity(Intent(this@SplashScreenActivity, Main2Activity::class.java))
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == PERMISSION_CODE_1) {
-            // Check if all permissions are granted
-            var allPermissionsGranted = true
-            for (result in grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    allPermissionsGranted = false
-                    break
+        when (requestCode) {
+            PERMISSION_CODE_MULTIPLE -> {
+                // Check if all permissions are granted
+                if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                    // All permissions granted, proceed with your logic
+                    startActivity(Intent(this@SplashScreenActivity, Main2Activity::class.java))
+                } else {
+                    // show a dialog for explaining about permissions
+                    checkPermissions()
                 }
             }
-
-            if (allPermissionsGranted) {
-                Log.d("TAGY","All Permissions granted")
-                startActivity(Intent(this@SplashScreenActivity,Main2Activity::class.java))
-                // All permissions are granted, proceed with app functionality
-                // Implement your app logic here
-            } else {
-                Log.d("TAGY","Permissions not granted")
-                // Permissions were not granted, show a toast indicating permissions are necessary
-                Toast.makeText(this, "Permissions are necessary to proceed", Toast.LENGTH_SHORT).show()
-                // Close the app or handle it appropriately
-                finish()
-            }
         }
     }
+
 
 }

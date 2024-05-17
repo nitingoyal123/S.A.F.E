@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout1"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:background="#F2F46161"
+            android:paddingBottom="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/txt_scam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text=""
+                android:textColor="#DA0000"
+                android:textSize="45sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/txt_sender_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="Rahul Jain"
+                android:textSize="38sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_scam" />
+
+            <TextView
+                android:id="@+id/txt_message_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="23dp"
+                android:textColor="@color/black"
+                android:text="vjnakf ihlgqvoseniglh ahreoufigah8 9f3uilesvnfigbv9iubjvb9uo4ngwap9heuILSVdjeagphw9veols iudxjkdab4gawvelsdvhp4aoiwrvnsdxgoewvISUDBk"
+                android:textSize="19sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_sender_name" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
