@@ -21,6 +21,7 @@ class HomeContactRecyclerViewAdapter(var context: Context, var list : MutableLis
         return MyViewHolder(binding)
     }
 
+
     override fun getItemCount(): Int {
         return list.size
     }

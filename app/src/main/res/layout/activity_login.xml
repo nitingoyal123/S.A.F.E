@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".loginandsignup.LoginActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gd1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/_10sdp"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gd2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/_10sdp"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gd3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/_10sdp"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gd4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/_10sdp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/gd3"
+            app:layout_constraintEnd_toEndOf="@+id/gd4"
+            app:layout_constraintStart_toStartOf="@+id/gd1"
+            app:layout_constraintTop_toTopOf="@+id/gd2">
+
+            <ProgressBar
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/pg2"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/googleSignInButton"
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:shadowRadius="@integer/material_motion_duration_long_2"
+                app:layout_constraintEnd_toEndOf="@+id/txtSignInWithGoogle"
+                app:layout_constraintStart_toStartOf="@+id/txtSignInWithGoogle"
+                app:layout_constraintTop_toBottomOf="@+id/txtSignInWithGoogle" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log in"
+                android:textColor="#4E2056"
+                android:textSize="@dimen/_40sdp"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_40sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/_100sdp"
+                android:paddingStart="@dimen/_3sdp"
+                android:paddingEnd="@dimen/_3sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edtDocNameLoginLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtLoginEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:hint="Email ID"
+                        android:inputType="textPersonName"
+                        android:textSize="23sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+
+                    android:id="@+id/edtPatientIdLoginLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtLoginPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:textSize="23sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/txtForgotPassword"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="Forgot Id ?"-->
+                <!--                    android:textColor="#850ACC"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    android:gravity="end"-->
+                <!--                    android:textSize="@dimen/_13ssp"/>-->
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnlogin"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_shape"
+                android:gravity="center"
+                android:onClick="btnNext"
+                android:text="Log In"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_24ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
+
+            <TextView
+                android:id="@+id/txtSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_9sdp"
+                android:text="Sign Up ?"
+                android:textSize="@dimen/_13ssp"
+                android:textColor="#850ACC"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/btnlogin"
+                app:layout_constraintStart_toStartOf="@+id/btnlogin"
+                app:layout_constraintTop_toBottomOf="@+id/btnlogin" />
+
+
+            <TextView
+                android:id="@+id/txtSignInWithGoogle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_69sdp"
+                android:text="Or sign in with"
+                android:textSize="@dimen/_16ssp"
+                android:textColor="#850ACC"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/btnlogin"
+                app:layout_constraintStart_toStartOf="@+id/btnlogin"
+                app:layout_constraintTop_toBottomOf="@+id/txtSignup" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:orientation="vertical"-->
+<!--android:padding="16dp"-->
+<!--android:gravity="center">-->
+
+<!--&lt;!&ndash; Welcome Back Text &ndash;&gt;-->
+<!--<TextView-->
+<!--    android:id="@+id/tvWelcome"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Welcome Back!"-->
+<!--    android:textSize="24sp"-->
+<!--    android:textStyle="bold"-->
+<!--    android:textColor="#000"-->
+<!--    android:layout_marginBottom="24dp"/>-->
+
+<!--&lt;!&ndash; Email Input &ndash;&gt;-->
+<!--<com.google.android.material.textfield.TextInputLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_marginBottom="16dp">-->
+
+<!--    <com.google.android.material.textfield.TextInputEditText-->
+<!--        android:id="@+id/edtEmail"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Email"-->
+<!--        android:inputType="textEmailAddress"-->
+<!--        android:drawableStart="@drawable/ic_email" />-->
+<!--</com.google.android.material.textfield.TextInputLayout>-->
+
+<!--&lt;!&ndash; Password Input &ndash;&gt;-->
+<!--<com.google.android.material.textfield.TextInputLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_marginBottom="8dp">-->
+
+<!--    <com.google.android.material.textfield.TextInputEditText-->
+<!--        android:id="@+id/edtPassword"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Password"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:drawableStart="@drawable/ic_lock"-->
+<!--        android:endIconMode="password_toggle" />-->
+<!--</com.google.android.material.textfield.TextInputLayout>-->
+
+<!--&lt;!&ndash; Remember Password & Forget Password &ndash;&gt;-->
+<!--<LinearLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="horizontal"-->
+<!--    android:gravity="center_vertical"-->
+<!--    android:layout_marginBottom="24dp">-->
+
+<!--    <CheckBox-->
+<!--        android:id="@+id/cbRemember"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Remember Password"-->
+<!--        android:textColor="#000" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvForgotPassword"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="auto"-->
+<!--        android:text="Forget Password?"-->
+<!--        android:textColor="#FF0000"-->
+<!--        android:textStyle="bold"-->
+<!--        android:paddingStart="16dp" />-->
+<!--</LinearLayout>-->
+
+<!--&lt;!&ndash; Sign In Button &ndash;&gt;-->
+<!--<Button-->
+<!--    android:id="@+id/btnSignIn"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:background="@drawable/button_shape"-->
+<!--    android:text="Sign In"-->
+<!--    android:textColor="#FFFFFF"-->
+<!--    android:textStyle="bold"-->
+<!--    android:textSize="18sp"-->
+<!--    android:layout_marginBottom="16dp" />-->
+
+<!--&lt;!&ndash; Or Sign in with Text &ndash;&gt;-->
+<!--<TextView-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="Or sign in with"-->
+<!--    android:textColor="#000"-->
+<!--    android:layout_marginBottom="16dp"-->
+<!--    android:textSize="14sp"-->
+<!--    android:textStyle="italic"/>-->
+
+<!--&lt;!&ndash; Google and Facebook Sign In Buttons &ndash;&gt;-->
+<!--<LinearLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="horizontal"-->
+<!--    android:gravity="center">-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnGoogleSignIn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:drawableStart="@drawable/ic_google"-->
+<!--        android:text="Google"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textColor="#000"-->
+<!--        android:layout_marginEnd="16dp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnFacebookSignIn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:drawableStart="@drawable/ic_facebook"-->
+<!--        android:text="Facebook"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:backgroundTint="#3b5998" />-->
+<!--</LinearLayout>-->
+
+<!--</LinearLayout>-->
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    tools:context=".loginandsignup.LoginActivity">-->
+
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/gd1"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_begin="@dimen/_10sdp"/>-->
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/gd2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintGuide_begin="@dimen/_10sdp"/>-->
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/gd3"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintGuide_end="@dimen/_10sdp"/>-->
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/gd4"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_end="@dimen/_10sdp"/>-->
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/gd3"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/gd4"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/gd1"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/gd2">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Log in"-->
+<!--                android:textColor="#4E2056"-->
+<!--                android:textSize="@dimen/_40sdp"-->
+<!--                android:textStyle="bold"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/linearLayout"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/linearLayout"-->
+<!--                android:paddingStart="@dimen/_3sdp"-->
+<!--                android:paddingEnd="@dimen/_3sdp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent">-->
+
+
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/edtDocNameLoginLayout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        android:id="@+id/edtLoginEmail"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:hint="Email ID"-->
+<!--                        android:inputType="textPersonName"-->
+<!--                        android:textSize="23sp" />-->
+
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+
+<!--                    android:id="@+id/edtPatientIdLoginLayout"-->
+<!--                    android:layout_marginTop="@dimen/_15sdp"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        android:id="@+id/edtLoginPassword"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:hint="Password"-->
+<!--                        android:inputType="textPassword"-->
+<!--                        android:textSize="23sp" />-->
+
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--&lt;!&ndash;                <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/txtForgotPassword"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:text="Forgot Id ?"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textColor="#850ACC"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textStyle="bold"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:gravity="end"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textSize="@dimen/_13ssp"/>&ndash;&gt;-->
+
+<!--            </LinearLayout>-->
+
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:id="@+id/btnlogin"-->
+<!--                android:layout_width="@dimen/_120sdp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/button_shape"-->
+<!--                android:gravity="center"-->
+<!--                android:onClick="btnNext"-->
+<!--                android:text="Log In"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="@dimen/_24ssp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/txtSignup"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/_9sdp"-->
+<!--                android:text="Sign Up ?"-->
+<!--                android:textColor="#850ACC"-->
+<!--                android:textStyle="bold"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/btnlogin"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/btnlogin"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/btnlogin" />-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+
+<!--</layout>-->

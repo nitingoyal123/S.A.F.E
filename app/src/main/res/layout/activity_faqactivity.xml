@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".helpcenter.FAQActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_faq_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No FAQs yet..."
+            android:textColor="#4E2056"
+            android:gravity="center"
+            android:textSize="36sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

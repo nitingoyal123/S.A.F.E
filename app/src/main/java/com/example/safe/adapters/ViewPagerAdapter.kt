@@ -8,6 +8,7 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_
     private val fragmentList: MutableList<Fragment> = ArrayList()
     private val fragmentTitleList: MutableList<String> = ArrayList()
 
+
     override fun getItem(position: Int): Fragment {
         return fragmentList[position]
     }
@@ -21,7 +22,7 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_
         fragmentTitleList.add(title)
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return fragmentTitleList[position]
     }
 }

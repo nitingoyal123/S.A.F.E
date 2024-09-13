@@ -5,16 +5,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safe.databinding.HistoryMessageItemLayoutBinding
-import com.example.safe.model.Message
+import com.example.safe.messageInROOM.MessageTable
+import org.jetbrains.skia.Color
 import com.example.safe.HistoryMessageRecyclerViewAdapter.MyViewHolder as MyViewHolder1
 
-class HistoryMessageRecyclerViewAdapter(var context : Context, var list : MutableList<Message>) : RecyclerView.Adapter<HistoryMessageRecyclerViewAdapter.MyViewHolder>() {
+class HistoryMessageRecyclerViewAdapter(var context : Context, var list : MutableList<MessageTable>) : RecyclerView.Adapter<HistoryMessageRecyclerViewAdapter.MyViewHolder>() {
 
-    var onItemClick : ((Message) -> Unit)? = null
+    var onItemClick : ((MessageTable) -> Unit)? = null
 
     class MyViewHolder(var binding : HistoryMessageItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: Message) {
-            binding.message = message
+        fun bind(messageTable: MessageTable) {
+            binding.messageTable = messageTable
+            if (messageTable.spam) {
+                binding.linearLayout1.setBackgroundColor(Color.RED)
+            } else {
+                binding.linearLayout1.setBackgroundColor(Color.GREEN)
+            }
         }
     }
 
@@ -33,6 +39,4 @@ class HistoryMessageRecyclerViewAdapter(var context : Context, var list : Mutabl
     override fun getItemCount(): Int {
         return list.size
     }
-
-
 }

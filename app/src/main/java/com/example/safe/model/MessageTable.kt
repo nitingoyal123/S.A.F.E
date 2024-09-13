@@ -1,10 +1,10 @@
 package com.example.safe.model
 
-data class Message (
+data class MessageTable (
 
     var phoneNumber : String,
     var message : String,
     var date : String,
-    var DeepFake : Boolean
+    var spam : Boolean
 
 )

@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="message"
-            type="com.example.safe.model.Message" />
+            name="messageTable"
+            type="com.example.safe.messageInROOM.MessageTable" />
 
     </data>
 
@@ -29,9 +29,11 @@
 
 
             <LinearLayout
+                android:id="@+id/linearLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="#EB5B5B"
                 android:padding="@dimen/_10sdp">
 
                 <TextView
@@ -39,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_2sdp"
-                    android:text="@{message.phoneNumber}"
+                    android:text="@{messageTable.phoneNumber}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
@@ -51,7 +53,7 @@
                     android:layout_margin="@dimen/_2sdp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{message.message}"
+                    android:text="@{messageTable.message}"
                     android:textSize="@dimen/_14sdp" />
 
                 <TextView
@@ -59,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:text="@{message.date}"
+                    android:text="@{messageTable.date}"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
