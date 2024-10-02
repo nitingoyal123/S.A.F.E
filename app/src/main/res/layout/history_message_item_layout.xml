@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -7,7 +7,7 @@
 
         <variable
             name="messageTable"
-            type="com.example.safe.messageInROOM.MessageTable" />
+            type="com.example.safe.model.MessageTable" />
 
     </data>
 
@@ -20,6 +20,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/_6sdp"
             app:cardCornerRadius="8dp"
             app:cardBackgroundColor="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,12 +34,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="#EB5B5B"
                 android:padding="@dimen/_10sdp">
 
                 <TextView
                     android:id="@+id/txtPhoneNumber"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_2sdp"
                     android:text="@{messageTable.phoneNumber}"

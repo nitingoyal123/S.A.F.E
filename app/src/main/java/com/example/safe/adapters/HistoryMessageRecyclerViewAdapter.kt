@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safe.databinding.HistoryMessageItemLayoutBinding
-import com.example.safe.messageInROOM.MessageTable
+import com.example.safe.model.MessageTable
 import org.jetbrains.skia.Color
 import com.example.safe.HistoryMessageRecyclerViewAdapter.MyViewHolder as MyViewHolder1
 
@@ -16,11 +16,11 @@ class HistoryMessageRecyclerViewAdapter(var context : Context, var list : Mutabl
     class MyViewHolder(var binding : HistoryMessageItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(messageTable: MessageTable) {
             binding.messageTable = messageTable
-            if (messageTable.spam) {
-                binding.linearLayout1.setBackgroundColor(Color.RED)
-            } else {
-                binding.linearLayout1.setBackgroundColor(Color.GREEN)
-            }
+//            if (messageTable.spam) {
+//                binding.linearLayout1.setBackgroundColor(Color.RED)
+//            } else {
+//                binding.linearLayout1.setBackgroundColor(Color.GREEN)
+//            }
         }
     }
 

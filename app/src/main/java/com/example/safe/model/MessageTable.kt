@@ -1,10 +1,14 @@
 package com.example.safe.model
 
-data class MessageTable (
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-    var phoneNumber : String,
-    var message : String,
-    var date : String,
-    var spam : Boolean
-
+@Entity(tableName = "messages")
+data class MessageTable(
+    @PrimaryKey
+    var timeStamp : Long,
+    var phoneNumber : String = "",
+    var message : String = "",
+    var date : String = "",
+    var spam : Boolean = false
 )

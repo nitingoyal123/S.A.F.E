@@ -15,9 +15,15 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import android.widget.RemoteViews
+import androidx.compose.ui.graphics.Color
+import com.example.safe.splashscreen.SplashScreenActivity
+import com.example.safe.utility.AppUtility
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SMSReceiver : BroadcastReceiver() {
-
     companion object {
         const val CHANNEL_ID = "sms_channel"
         const val NOTIFICATION_ID = 1
@@ -25,7 +31,6 @@ class SMSReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent != null && Telephony.Sms.Intents.SMS_RECEIVED_ACTION == intent.action) {
-            // Check if the app has the necessary permission
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED) {
                 val bundle = intent.extras
                 if (bundle != null) {
@@ -37,22 +42,105 @@ class SMSReceiver : BroadcastReceiver() {
                         sender = smsMessage.originatingAddress.toString()
                         message.append(smsMessage.messageBody)
                     }
-                    showNotification(context, sender, message.toString())
+
+                    val messageText = message.toString()
+                    val otp = processMessage(messageText)
+
+                    if (!otp.equals("-1")) {
+                        showOtpNotification(context, sender, otp)
+                    } else {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val isSpam = AppUtility.sendAPIRequest(messageText)
+                            showNotification(context, sender, messageText, isSpam)
+                        }
+                    }
                 }
-            } else {
-                // Handle the case where permission is not granted
-                // You could inform the user or log the event
             }
         }
     }
 
-    private fun showNotification(context: Context, sender: String, message: String) {
+    // Function to extract OTP from the message
+    fun extractOtp(message: String): String? {
+        val otpPattern = "\\b\\d{4,6}\\b".toRegex()
+        val matchResult = otpPattern.find(message)
+        return matchResult?.value
+    }
+
+    // Function to check if the message contains OTP-related keywords and extract OTP
+    fun processMessage(message: String): String {
+        if (containsOtp(message)) {
+            val otp = extractOtp(message)
+            return otp ?: "-1" // If OTP is found, return it; otherwise return -1
+        } else {
+            return "-1" // Return -1 if no OTP-related keywords are found
+        }
+    }
+
+    // Function to check if the message contains OTP-related keywords
+    fun containsOtp(message: String): Boolean {
+        val specialWords = listOf("otp", "password")
+        val lowerMessage = message.lowercase()
+
+        for (specialWord in specialWords) {
+            if (lowerMessage.contains(specialWord)) {
+                return true
+            }
+        }
+        return false
+    }
+
+
+    private fun showOtpNotification(context: Context, sender: String, otp: String) {
         createNotificationChannel(context)
 
-        val notificationIntent = Intent(context, MainActivity::class.java).apply {
+        val notificationIntent = Intent(context, SplashScreenActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        // Set up the custom layout
+        val customView = RemoteViews(context.packageName, R.layout.otp_notification_layout).apply {
+            setTextViewText(R.id.phone_number, sender)  // Set the sender's phone number
+            setTextViewText(R.id.otp_received, otp)     // Set the received OTP
+
+        }
+
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.baseline_notifications_24) // Use an appropriate icon for the notification
+            .setCustomContentView(customView)             // Set the custom layout for the notification
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle()) // Decorate with custom view style
+            .setPriority(NotificationCompat.PRIORITY_HIGH)  // Set high priority for the notification
+            .setContentIntent(pendingIntent)               // Add the pending intent
+            .setAutoCancel(true)                           // Dismiss notification when clicked
+
+        with(NotificationManagerCompat.from(context)) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                return
+            }
+            notify(NOTIFICATION_ID, builder.build())  // Push the notification
+        }
+    }
+
+
+    private fun showNotification(context: Context, sender: String, message: String, isSpam: Boolean) {
+        createNotificationChannel(context)
+
+        val notificationIntent = Intent(context, SplashScreenActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        // Set up the custom layout
+        val customView = RemoteViews(context.packageName, R.layout.notification_otp).apply {
+            setTextViewText(R.id.message_sender, sender)  // Set the sender's phone number
+            setTextViewText(R.id.text_message, message) // Set the received OTP
+            if (isSpam) {
+                setInt(R.id.layout, "setBackgroundColor", android.graphics.Color.argb(100, 218, 0, 0)) // Spam - set red background
+            } else {
+                setInt(R.id.layout, "setBackgroundColor", android.graphics.Color.argb(86, 182, 245, 174)) // Not Spam - set green background
+            }
+
+        }
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.airtel)
@@ -64,18 +152,7 @@ class SMSReceiver : BroadcastReceiver() {
             .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(context)) {
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 return
             }
             notify(NOTIFICATION_ID, builder.build())

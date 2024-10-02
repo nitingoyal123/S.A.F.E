@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.safe.model.MessageTable
 
-@Database(entities = [MessageTable::class], version = 1)
+@Database(entities = [MessageTable::class], version = 2)
 abstract class MDatabase : RoomDatabase() {
 
     abstract fun messageDao(): MessageDao
@@ -20,7 +21,9 @@ abstract class MDatabase : RoomDatabase() {
                     context.applicationContext,
                     MDatabase::class.java,
                     "message_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

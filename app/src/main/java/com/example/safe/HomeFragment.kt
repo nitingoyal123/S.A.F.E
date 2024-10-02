@@ -13,7 +13,7 @@
 //import androidx.recyclerview.widget.LinearLayoutManager
 //import androidx.recyclerview.widget.RecyclerView
 //import com.example.safe.manager.MessageManager
-//import com.example.safe.messageInROOM.MessageTable
+//import com.example.safe.model.MessageTable
 //import com.example.safe.retrofit.APIResponse
 //import com.example.safe.retrofit.RetrofitClient
 //import retrofit2.Call
@@ -155,12 +155,14 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.safe.databinding.FragmentHomeBinding
 import com.example.safe.manager.MessageManager
-import com.example.safe.messageInROOM.MessageTable
+import com.example.safe.model.MessageTable
 import com.example.safe.retrofit.APIResponse
 import com.example.safe.retrofit.RetrofitClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -173,17 +175,20 @@ class HomeFragment : Fragment() {
 
     private lateinit var rv: RecyclerView
     private var clicked = false
+    private lateinit var adapter : HistoryMessageRecyclerViewAdapter
+    private lateinit var binding : FragmentHomeBinding
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-        rv = view.findViewById(R.id.rvMessages)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        Log.d("Progress", "Entered Home fragment")
+        Log.d("MessageManager","hello")
+        rv = binding.rvMessages
         rv.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = HistoryMessageRecyclerViewAdapter(requireContext(), MessageManager.listOfMessageTables)
+        adapter = HistoryMessageRecyclerViewAdapter(requireContext(), MessageManager.listOfMessageTables)
         rv.adapter = adapter
 
         adapter.onItemClick = { messageTable ->
@@ -191,27 +196,28 @@ class HomeFragment : Fragment() {
             showMyDialog(messageTable)
         }
 
-        view.findViewById<FloatingActionButton>(R.id.reloadButton).setOnClickListener {
-            view.findViewById<ProgressBar>(R.id.reloadProgressBar).visibility = View.VISIBLE
+        binding.reloadButton.setOnClickListener {
+            binding.reloadProgressBar.visibility = View.VISIBLE
             reloadMsgs()
-            adapter.notifyDataSetChanged()
-            rv.adapter = adapter
-            rv.visibility = View.VISIBLE
-            view.findViewById<ProgressBar>(R.id.reloadProgressBar).visibility = View.INVISIBLE
         }
 
-        return view
+        return binding.root
     }
 
     private fun reloadMsgs() {
         lifecycleScope.launch {
             MessageManager.loadData(requireContext())
+            adapter.notifyDataSetChanged()
+            rv.adapter = adapter
+            rv.visibility = View.VISIBLE
+            binding.reloadProgressBar.visibility = View.INVISIBLE
         }
     }
 
     private fun showMyDialog(messageTable: MessageTable) {
 //        clicked = false
         val dialog = Dialog(requireContext())
+
         dialog.setContentView(R.layout.message_fake_or_not_layout)
 
         val txtFakeOrNot = dialog.findViewById<TextView>(R.id.txt_scam)

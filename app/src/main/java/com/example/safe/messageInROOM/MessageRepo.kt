@@ -1,8 +1,7 @@
 package com.example.safe.messageInROOM
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.LiveData
+import com.example.safe.model.MessageTable
 
 class MessageRepo(context : Context) {
 

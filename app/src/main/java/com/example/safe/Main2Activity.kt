@@ -44,6 +44,7 @@
 package com.example.safe
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -57,7 +58,7 @@ class Main2Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main2)
-
+        Log.d("Progress", "Entered main2 activity")
         val bottomNavigationView = findViewById<BottomNavigationView>(binding.bottomNavigation.id)
 
         bottomNavigationView.selectedItemId = R.id.navigation_home
