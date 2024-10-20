@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.ContactsContract
 import android.util.Log
+import com.example.safe.utility.AppUtility
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -14,12 +17,15 @@ object ContactManager {
 
     @SuppressLint("Range")
     suspend fun loadContacts(context: Context) {
+        Log.d("Progress", "Load Contacts Called")
         withContext(Dispatchers.IO) {
             val sharedPreferences = context.getSharedPreferences(CONTACTS, Context.MODE_PRIVATE)
 
-            if (sharedPreferences.getBoolean(CONTACTS_LOADED, false)) {
+            if (sharedPreferences.getInt(CONTACTS_LOADED, -1) == 101) {
+                Log.d("Contact", "Contacts already exists")
                 return@withContext
             }
+                Log.d("Contact", "Contacts not exists")
 
             val editor = sharedPreferences.edit()
             val contentResolver = context.contentResolver
@@ -29,22 +35,18 @@ object ContactManager {
                 while (it.moveToNext()) {
                     val name = it.getString(it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                     val contactID = it.getString(it.getColumnIndex(ContactsContract.Contacts._ID))
-                    var phoneNumber = getPhoneNumberFromContactId(contactID, context)
-                    val photo = it.getString(it.getColumnIndex(ContactsContract.Contacts.PHOTO_ID))
+                    val phoneNumber = getPhoneNumberFromContactId(contactID, context)
+//                    val photo = it.getString(it.getColumnIndex(ContactsContract.Contacts.PHOTO_ID))
 
-                    if (!name.isNullOrBlank() && !phoneNumber.isNullOrBlank()) {
-                        phoneNumber = phoneNumber.replace(" ", "")
-                        val key = if (phoneNumber.length > 3 && phoneNumber[0] == '+') {
-                            phoneNumber.substring(3)
-                        } else {
-                            phoneNumber
-                        }
-                        editor.putString(key, name)
-                        Log.d("ContactManager", "Stored contact: $name with phone: $phoneNumber")
+                    if (!name.isNullOrBlank() && phoneNumber.isNotBlank()) {
+                        val mobileNumber = AppUtility.formatPhoneNumber(phoneNumber)
+                        editor.putString(mobileNumber, name)
+                        editor.apply()
+                        Log.d("Contacts", "$mobileNumber : $name")
                     }
                 }
             }
-            editor.putBoolean(CONTACTS_LOADED, true).apply()
+            editor.putInt(CONTACTS_LOADED, 101).commit()
         }
     }
 

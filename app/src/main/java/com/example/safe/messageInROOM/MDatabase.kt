@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.safe.model.MessageTable
 
-@Database(entities = [MessageTable::class], version = 2)
+@Database(entities = [MessageTable::class], version = 3)
 abstract class MDatabase : RoomDatabase() {
 
     abstract fun messageDao(): MessageDao

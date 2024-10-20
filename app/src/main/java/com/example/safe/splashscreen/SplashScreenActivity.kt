@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -104,22 +105,26 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
      private fun loadDataAndProceed() {
+//         binding.progressBar.visibility = View.VISIBLE
          lifecycleScope.launch {
              try {
                  if (MessageManager.listOfMessageTables.isEmpty()) {
+                     Log.d("Permissions", "READ_CONTACTS granted: ${PackageManager.PERMISSION_GRANTED}")
+
                      withContext(Dispatchers.IO) {
                          ContactManager.loadContacts(this@SplashScreenActivity)
                          MessageManager.readMessages(this@SplashScreenActivity)
                      }
                  }
                  withContext(Dispatchers.Main) {
-                     startActivity(Intent(this@SplashScreenActivity, Main2Activity::class.java))
+                     startActivity(Intent(this@SplashScreenActivity, LoginActivity::class.java))
                      finish()
                  }
              } catch (e: Exception) {
                  Log.e("LOAD_DATA_ERROR", e.message.toString())
                  withContext(Dispatchers.Main) {
                      Toast.makeText(this@SplashScreenActivity, "Failed to load data", Toast.LENGTH_SHORT).show()
+//                        binding.progressBar.visibility = View.INVISIBLE
                  }
              }
          }

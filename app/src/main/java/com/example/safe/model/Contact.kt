@@ -1,7 +1,12 @@
 package com.example.safe.model
 
-data class Contact(
-    var name : String,
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "contacts")
+data class Contact (
+    @PrimaryKey
     var phoneNumber : String,
-    var image : Int
+    var name : String,
+    var blocked : Boolean
 )

@@ -31,7 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
@@ -46,7 +45,10 @@ class LoginActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
         if (auth.currentUser != null) {
+            binding.constraintLayout.visibility = View.INVISIBLE
+            binding.progressBar.visibility = View.INVISIBLE
             startActivity(Intent(this@LoginActivity, Main2Activity::class.java))
+            finish()
         }
         binding.btnLogin.setOnClickListener { login() }
         binding.txtRegsiter.setOnClickListener {
@@ -93,6 +95,8 @@ class LoginActivity : AppCompatActivity() {
 
 
     fun login() {
+        binding.constraintLayout.visibility = View.INVISIBLE
+        binding.progressBar.visibility = View.VISIBLE
         val email = binding.edtLoginEmail.text.toString().trim()
         val password = binding.edtLoginPassword.text.toString().trim()
 
@@ -104,6 +108,7 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 startActivity(Intent(this@LoginActivity, Main2Activity::class.java))
+                finish()
             }
             .addOnFailureListener { exception ->
                 Log.e("LOGIN_ERROR", exception.message.toString())

@@ -51,24 +51,24 @@ object MessageManager {
 
     @SuppressLint("Range")
     suspend fun loadData(context: Context) {
+        var count = 0
         sharedPreferences = context.getSharedPreferences("MESSAGES", Context.MODE_PRIVATE)
         withContext(Dispatchers.IO) {
             val cursor: Cursor? = context.contentResolver.query(Telephony.Sms.CONTENT_URI, null, null, null, null)
             cursor?.use {
-                while (it.moveToNext()) {
+                while (it.moveToNext() && count < 500) {
+                    count++
                     var sender = it.getString(it.getColumnIndex(Telephony.Sms.ADDRESS))
                     val messageBody = it.getString(it.getColumnIndex(Telephony.Sms.BODY))
                     val timeStamp = it.getString(it.getColumnIndex(Telephony.Sms.DATE)).toLong()
 
-                    if (sender[0] == '+') sender = sender.substring(3)
+                    sender = AppUtility.formatPhoneNumber(sender)
 
-                    val contact = sharedPreferences.getString(sender.trim(), sender).toString()
+                    val contact = sharedPreferences.getString(sender, sender).toString()
 
                     saveMessageToFirebase(contact, timeStamp, messageBody)
 
-//                    var isSpam = AppUtility.sendAPIRequest(messageBody)
-
-                    val message = MessageTable(timeStamp, sender, messageBody, formatDate(timeStamp),false)
+                    val message = MessageTable(timeStamp=timeStamp, phoneNumber = sender, message = messageBody, date = formatDate(timeStamp))
 
                     Log.d("dataLoading", message.toString())
 

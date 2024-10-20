@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "messages")
 data class MessageTable(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    var id : Long = 0,
     var timeStamp : Long,
     var phoneNumber : String = "",
     var message : String = "",
