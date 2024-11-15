@@ -30,9 +30,11 @@ class HistoryMessageRecyclerViewAdapter(var context : Context, var list : Mutabl
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(list[position])
+        var curr = list[position]
+        curr.phoneNumber = context.getSharedPreferences("contacts", Context.MODE_PRIVATE).getString(curr.phoneNumber, curr.phoneNumber).toString()
+        holder.bind(curr)
         holder.itemView.setOnClickListener {
-            onItemClick?.invoke(list[position])
+            onItemClick?.invoke(curr)
         }
     }
 

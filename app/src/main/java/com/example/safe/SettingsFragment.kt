@@ -38,6 +38,10 @@ class SettingsFragment : Fragment() {
             requireActivity().finish()
         }
 
+        view.findViewById<ConstraintLayout>(R.id.cLManageBlocklist).setOnClickListener {
+            startActivity(Intent(requireContext(), BlackListActivity::class.java))
+        }
+
         return view
     }
 

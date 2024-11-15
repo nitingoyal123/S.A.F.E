@@ -186,7 +186,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/_4sdp"
                                 android:padding="@dimen/_5sdp"
-                                android:text="Already hacve an account? Login"
+                                android:text="Already have an account? Login"
                                 android:textSize="@dimen/_10ssp"
                                 android:textColor="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"

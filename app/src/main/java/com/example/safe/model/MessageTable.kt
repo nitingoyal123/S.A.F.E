@@ -11,5 +11,6 @@ data class MessageTable(
     var phoneNumber : String = "",
     var message : String = "",
     var date : String = "",
-    var spam : Boolean = false
+    var spam : Boolean = false,
+    var isBlocked : Boolean = false
 )

@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.ContactsContract
 import android.util.Log
+import androidx.room.Database
+import com.example.safe.messageInROOM.MDatabase
+import com.example.safe.model.Contact
 import com.example.safe.utility.AppUtility
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
@@ -12,11 +15,14 @@ import kotlinx.coroutines.withContext
 
 object ContactManager {
 
+    var blockedContacts : MutableList<Contact> = mutableListOf()
     private const val CONTACTS = "contacts"
     private const val CONTACTS_LOADED = "contactsLoaded"
+    private lateinit var database: MDatabase
 
     @SuppressLint("Range")
     suspend fun loadContacts(context: Context) {
+        database = MDatabase.getDatabase(context)
         Log.d("Progress", "Load Contacts Called")
         withContext(Dispatchers.IO) {
             val sharedPreferences = context.getSharedPreferences(CONTACTS, Context.MODE_PRIVATE)
@@ -38,15 +44,17 @@ object ContactManager {
                     val phoneNumber = getPhoneNumberFromContactId(contactID, context)
 //                    val photo = it.getString(it.getColumnIndex(ContactsContract.Contacts.PHOTO_ID))
 
-                    if (!name.isNullOrBlank() && phoneNumber.isNotBlank()) {
+                    if (phoneNumber.isNotBlank()) {
                         val mobileNumber = AppUtility.formatPhoneNumber(phoneNumber)
+//                        database.contactDao().insert(Contact(phoneNumber = mobileNumber, name = name, blocked = false))
                         editor.putString(mobileNumber, name)
                         editor.apply()
-                        Log.d("Contacts", "$mobileNumber : $name")
+                        Log.d("Contacts", "$mobileNumber : ${sharedPreferences.getString(mobileNumber, "")}")
                     }
                 }
             }
-            editor.putInt(CONTACTS_LOADED, 101).commit()
+            editor.putInt(CONTACTS_LOADED, 101).apply()
+            editor.commit()
         }
     }
 
@@ -67,4 +75,9 @@ object ContactManager {
         }
         return phoneNumber
     }
+
+    suspend fun loadBlockedContacts(context : Context) {
+        blockedContacts = MDatabase.getDatabase(context).contactDao().getBlockedContacts()
+    }
+
 }

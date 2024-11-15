@@ -47,6 +47,9 @@ class LoginActivity : AppCompatActivity() {
         if (auth.currentUser != null) {
             binding.constraintLayout.visibility = View.INVISIBLE
             binding.progressBar.visibility = View.INVISIBLE
+            CoroutineScope(Dispatchers.IO).launch {
+                MessageManager.readMessages(this@LoginActivity)
+            }
             startActivity(Intent(this@LoginActivity, Main2Activity::class.java))
             finish()
         }
@@ -107,6 +110,9 @@ class LoginActivity : AppCompatActivity() {
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
+                CoroutineScope(Dispatchers.IO).launch {
+                    MessageManager.readMessages(this@LoginActivity)
+                }
                 startActivity(Intent(this@LoginActivity, Main2Activity::class.java))
                 finish()
             }

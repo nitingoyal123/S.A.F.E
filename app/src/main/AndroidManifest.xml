@@ -25,6 +25,9 @@
         android:theme="@style/Theme.SAFE"
         tools:targetApi="31">
         <activity
+            android:name=".BlackListActivity"
+            android:exported="false" />
+        <activity
             android:name=".helpcenter.ContactSupportActivity"
             android:exported="false" />
         <activity
@@ -59,13 +62,13 @@
             android:name=".loginandsignup.LoginActivity"
             android:exported="false" />
 
-        <receiver android:name=".SMSReceiver"
+        <receiver
+            android:name=".SMSReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

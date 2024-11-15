@@ -7,13 +7,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.safe.databinding.ContactItemLayoutBinding
 import com.example.safe.model.Contact
 
-class HomeContactRecyclerViewAdapter(var context: Context, var list : MutableList<Contact>) : RecyclerView.Adapter<HomeContactRecyclerViewAdapter.MyViewHolder>() {
+class BlockedContactRecyclerViewAdapter(var context: Context, var list : List<String>) : RecyclerView.Adapter<BlockedContactRecyclerViewAdapter.MyViewHolder>() {
+
+    var onItemClick : ((Contact) -> Unit)? = null
+
+    fun updateData(newBlockedContacts: List<String>) {
+        list = newBlockedContacts
+        notifyDataSetChanged()
+    }
 
     class MyViewHolder(var binding : ContactItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(contact: Contact) {
             binding.contact = contact
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -21,13 +27,15 @@ class HomeContactRecyclerViewAdapter(var context: Context, var list : MutableLis
         return MyViewHolder(binding)
     }
 
-
     override fun getItemCount(): Int {
         return list.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(list[position])
+        var curr = Contact(phoneNumber = list[position], name = context.getSharedPreferences("contacts", Context.MODE_PRIVATE).getString(list[position], list[position]).toString(), blocked = true)
+        holder.bind(curr)
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(curr)
+        }
     }
-
 }

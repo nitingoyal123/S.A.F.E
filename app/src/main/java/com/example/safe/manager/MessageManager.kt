@@ -19,6 +19,7 @@ import java.util.Locale
 
 object MessageManager {
 
+    private const val CONTACTS = "contacts"
     private lateinit var repo: MessageRepo
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
@@ -35,15 +36,15 @@ object MessageManager {
         Log.d("Progress", "Read messages called")
         withContext(Dispatchers.IO) {
             repo = MessageRepo(context)
-            sharedPreferences = context.getSharedPreferences("MESSAGES", Context.MODE_PRIVATE)
+            sharedPreferences = context.getSharedPreferences(CONTACTS, Context.MODE_PRIVATE)
             editor = sharedPreferences.edit()
             Log.d("checkSP", sharedPreferences.getInt(DATA_STORED, -1).toString())
-            if (sharedPreferences.getInt(DATA_STORED, -1) == 10) {
+            if (sharedPreferences.getInt(DATA_STORED, -1) == 12) {
                 Log.d("Progress", "Messages loading from database")
                 listOfMessageTables = MDatabase.getDatabase(context).messageDao().getAllMessages().toMutableList()
             } else {
                 Log.d("Progress", "Messages loading from mobile phone")
-                editor.putInt(DATA_STORED, 10).apply()
+                editor.putInt(DATA_STORED, 12).apply()
                 loadData(context)
             }
         }
@@ -52,11 +53,11 @@ object MessageManager {
     @SuppressLint("Range")
     suspend fun loadData(context: Context) {
         var count = 0
-        sharedPreferences = context.getSharedPreferences("MESSAGES", Context.MODE_PRIVATE)
+        sharedPreferences = context.getSharedPreferences(CONTACTS, Context.MODE_PRIVATE)
         withContext(Dispatchers.IO) {
             val cursor: Cursor? = context.contentResolver.query(Telephony.Sms.CONTENT_URI, null, null, null, null)
             cursor?.use {
-                while (it.moveToNext() && count < 500) {
+                while (it.moveToNext() && count < 1000) {
                     count++
                     var sender = it.getString(it.getColumnIndex(Telephony.Sms.ADDRESS))
                     val messageBody = it.getString(it.getColumnIndex(Telephony.Sms.BODY))
@@ -64,11 +65,11 @@ object MessageManager {
 
                     sender = AppUtility.formatPhoneNumber(sender)
 
-                    val contact = sharedPreferences.getString(sender, sender).toString()
+                    val contact = sender
 
                     saveMessageToFirebase(contact, timeStamp, messageBody)
 
-                    val message = MessageTable(timeStamp=timeStamp, phoneNumber = sender, message = messageBody, date = formatDate(timeStamp))
+                    val message = MessageTable(timeStamp=timeStamp, phoneNumber = contact, message = messageBody, date = formatDate(timeStamp))
 
                     Log.d("dataLoading", message.toString())
 
